@@ -12,28 +12,26 @@ import { User } from '../users/entities/user.intity';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersSerivce: UsersService,
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
   async register(dto: RegisterDto): Promise<User> {
-    const exists = await this.usersSerivce.findByEmail(dto.email);
+    const exists = await this.usersService.findByEmail(dto.email);
     if (exists) throw new BadRequestException('Email already used');
 
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
-    const user = await this.usersSerivce.create({
-      firstName: dto.firstName,
-      lastName: dto.lastName,
-      email: dto.email,
-      password: passwordHash,
+    const user = await this.usersService.create({
+      ...dto,
+      passwordHash,
     });
 
     return user;
   }
 
   async login(email: string, password: string) {
-    const user = await this.usersSerivce.findByEmail(email);
+    const user = await this.usersService.findByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException('invalid credentials');
@@ -51,7 +49,7 @@ export class AuthService {
     };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: this.jwtService.sign(payload),
     };
   }
 }

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity() //le dice a TypeOrm que esto es una tabla
+@Entity('users') //le dice a TypeOrm que esto es una tabla
 export class User {
   @PrimaryGeneratedColumn('uuid') //genera automaticamente UUID
   id: string;
@@ -14,8 +14,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column() //crea columna
-  @Exclude()
+  @Column({ name: 'password_hash' }) //crea columna
   passwordHash: string;
 
   @Column()
