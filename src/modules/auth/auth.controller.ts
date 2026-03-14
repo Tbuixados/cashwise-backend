@@ -9,7 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { User } from '../users/entities/user.intity';
+import { User } from '../users/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { plainToInstance } from 'class-transformer';
 

@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-console.log('DB_HOST:', process.env.DB_HOST);
-console.log('DB_PORT:', process.env.DB_PORT);
-console.log('DB_USER:', process.env.DB_USER);
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-console.log('DB_NAME:', process.env.DB_NAME);
+import { Category } from 'src/modules/categories/entities/category.entity';
+import { PaymentMethod } from 'src/modules/payment-methods/entities/payment-method.entity';
+import { SeedService } from './seeds/seed.service';
 
 @Module({
   imports: [
@@ -24,6 +21,8 @@ console.log('DB_NAME:', process.env.DB_NAME);
         synchronize: true,
       }),
     }),
+    TypeOrmModule.forFeature([Category, PaymentMethod]),
   ],
+  providers: [SeedService],
 })
 export class DatabaseModule {}
